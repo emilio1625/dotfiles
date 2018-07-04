@@ -99,6 +99,9 @@ setopt hist_reduce_blanks
 setopt share_history
 setopt hist_verify
 
+# Aliases
+source ~/.zsh-aliases
+
 #Widgets
 source ~/.zsh-widgets
 
@@ -136,7 +139,7 @@ fi
 # fi
 
 # Hack for playerctl outside X.org
-if [[ -n $FBTERM ]]; then
+if [[ $(tty | grep tty\[2-5\]) ]]; then
     ENVIRON=/proc/$(pgrep -o -u $USER spotify)/environ
     if [ -e $ENVIRON ]; then
         SPOTIFY_ADDR=$(grep -z DBUS_SESSION_BUS_ADDRESS $ENVIRON)

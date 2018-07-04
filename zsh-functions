@@ -1,0 +1,40 @@
+# Functions
+
+play-pause-key() {
+    playerctl play-pause
+}
+
+next-key() {
+    playerctl next
+}
+
+previous-key() {
+    playerctl previous
+}
+
+raise-volume-key() {
+    pactl set-sink-volume 0 +5%
+}
+
+lower-volume-key() {
+    pactl set-sink-volume 0 -5%
+}
+
+mute-key() {
+    pactl set-sink-mute 0 toggle
+}
+
+brightness-down-key() {
+    brightnessctl -q set 5%-
+}
+
+brightness-up-key() {
+    brightnessctl -q set +5%
+}
+
+# Life's to short to put this in an alias xD
+mtp-mount() {
+    mtp-detect >/dev/null && gio mount -li | \
+        awk -F= '{if(index($2,"mtp") == 1)system("gio mount "$2)}'
+}
+

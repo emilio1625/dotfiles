@@ -1,0 +1,34 @@
+# Aliases
+
+# Going up (but is better to just use the directory stack)
+alias '..'='..'
+alias '...'='../..'
+alias '....'='../../..'
+alias '.....'='../../../..'
+alias '......'='../../../../..'
+
+# No glob >:|
+alias dnf='noglob dnf'
+alias 'sudo dnf'='noglob sudo dnf'
+alias locate='noglob locate'
+alias find='noglob find'
+
+# Configuration
+alias i3config="$EDITOR ~/.config/i3/config"
+alias swayconfig="$EDITOR ~/.config/sway/config"
+alias zshconfig="$EDITOR ~/.zshrc"
+
+# For interactive app that don't like arrow keys
+alias clips='rlwrap clips'
+
+# Repetitive commands
+alias mmount='udisksctl mount -b'
+alias unmount='udisksctl unmount -b'
+alias disconnect='nmcli connection down'
+alias connect='nmcli connection up'
+alias addwifi='nmcli dev wifi connect'
+
+# I have strange ways to exit the shell
+alias ':q'='exit'
+alias quit='exit'
+

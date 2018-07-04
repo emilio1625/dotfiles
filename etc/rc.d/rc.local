@@ -1,0 +1,13 @@
+#!/bin/bash
+
+loadkeys <<EOF
+keycode 1 = Escape
+keycode 58 = Escape
+keycode 115 = F15 
+keycode 224 = F16 
+keycode 225 = F17 
+keycode 165 = F18 
+keycode 164 = F19 
+keycode 163 = F20
+EOF
+

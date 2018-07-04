@@ -75,6 +75,9 @@ fi
 
 # User configuration
 
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=4'
+ZSH_AUTOSUGGEST_USE_ASYNC=1
+
 # You may need to manually set your language environment
 export LANG=es_MX.UTF-8
 
@@ -139,7 +142,7 @@ fi
 # fi
 
 # Hack for playerctl outside X.org
-if [[ $(tty | grep tty\[2-5\]) ]]; then
+if [[ $FBTERM || $TMUX ]]; then
     ENVIRON=/proc/$(pgrep -o -u $USER spotify)/environ
     if [ -e $ENVIRON ]; then
         SPOTIFY_ADDR=$(grep -z DBUS_SESSION_BUS_ADDRESS $ENVIRON)

@@ -36,4 +36,5 @@ inoremap <S-F8> <Esc>:silent !next-key<enter>a
 execute 'source' fnamemodify(expand('<sfile>'), ':h').'/config/main.vim'
 
 set showcmd
+set wrap
 

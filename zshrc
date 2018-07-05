@@ -82,7 +82,7 @@ ZSH_AUTOSUGGEST_USE_ASYNC=1
 export LANG=es_MX.UTF-8
 
 # Preferred editor for local and remote sessions
-if [[ -n $SSH_CONNECTION ]]; then
+if [[ -n "$SSH_CONNECTION" ]]; then
     export EDITOR='vi'
     export VISUAL='vi'
 else
@@ -131,21 +131,11 @@ if [[ -n "$DISPLAY" ]]; then
     xmodmap ~/.Xmodmap
 fi
 
-# if [[ ! "$DBUS_SESSION_BUS_ADDRESS" ]]; then
-    # SPOTIFY_PID="$(pidof -s spotify || pidof -s .spotify-wrapped)"
-    # if [[ -n "$SPOTIFY_PID" ]]; then
-        # QUERY_ENVIRON="$(cat /proc/${SPOTIFY_PID}/environ | tr '\0' '\n' | grep "DBUS_SESSION_BUS_ADDRESS" | cut -d "=" -f 2-)"
-        # if [[ "${QUERY_ENVIRON}" != "" ]]; then
-            # export DBUS_SESSION_BUS_ADDRESS="${QUERY_ENVIRON}"
-        # fi
-    # fi
-# fi
-
 # Hack for playerctl outside X.org
-if [[ $FBTERM || $TMUX ]]; then
-    ENVIRON=/proc/$(pgrep -o -u $USER spotify)/environ
-    if [ -e $ENVIRON ]; then
-        SPOTIFY_ADDR=$(grep -z DBUS_SESSION_BUS_ADDRESS $ENVIRON)
+if [[ "$FBTERM" || "$TMUX" || $(tty | grep tty) ]]; then
+    ENVIRON=$(cat /proc/$(pgrep -o -u $USER spotify)/environ | tr \\0 \\n)
+    if [ -n "$ENVIRON" ]; then
+        SPOTIFY_ADDR=$(grep DBUS_SESSION_BUS_ADDRESS <<< $ENVIRON)
         export $SPOTIFY_ADDR
     else
         echo "Unable to set DBUS_SESSION_BUS_ADDRESS."

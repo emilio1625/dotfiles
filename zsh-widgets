@@ -1,5 +1,7 @@
 # Widgets
 
+zle -N fb-shot fb-shot
+
 zle -N play-pause-key play-pause-key
 
 zle -N next-key next-key

@@ -1,5 +1,29 @@
 # Functions
 
+fb-shot() {
+    fbgrab ~/Imágenes/screenshots/`date +%d-%m-%Y_%H-%M-%S`.png
+}
+
+fix-spotify() {
+    if [[ "$FBTERM" || $(tty | grep tty) ]]; then
+        ENVIRON=$(cat /proc/$(pgrep -o -u $USER spotify)/environ | tr \\0 \\n)
+        if [ -n "$ENVIRON" ]; then
+            SPOTIFY_ADDR=$(grep DBUS_SESSION_BUS_ADDRESS <<< $ENVIRON)
+            export $SPOTIFY_ADDR
+        else
+            echo "Unable to set DBUS_SESSION_BUS_ADDRESS."
+        fi
+    fi
+}
+
+get_volume() {
+    echo $(pactl list sinks | grep "^[[:space:]]Volume:" | awk '{print $5}' | sed 's/%//g')
+}
+
+is_muted() {
+    [ $(pactl list sinks | grep "^[[:space:]]Mute:" | awk '{print $2}') = 'yes' ]
+}
+
 play-pause-key() {
     playerctl play-pause
 }
@@ -13,8 +37,7 @@ previous-key() {
 }
 
 raise-volume-key() {
-    local VOLUME=$(pactl list sinks | grep "^[[:space:]]Volume:" | awk '{print $5}' | sed 's/%//g')
-    if [ $VOLUME -lt 100 ]; then
+    if [ $(get_volume) -lt 100 ]; then
         pactl set-sink-volume 0 +5%
     fi
 }

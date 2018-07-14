@@ -1,51 +1,41 @@
-# Bindkeys
+# ZSH, TTY and POWERLEVEL9K themes config
 
-# In emacs mode 
+POWERLEVEL9K_LINUX_ICON=$'\uF30A' # Fedora Icon
+POWERLEVEL9K_MODE='nerdfont-complete'
+POWERLEVEL9K_PROMPT_ON_NEWLINE=true
+POWERLEVEL9K_RPROMPT_ON_NEWLINE=true
+POWERLEVEL9K_DIR_SHOW_WRITABLE=true
+POWERLEVEL9K_SHORTEN_DIR_LENGTH=3
+POWERLEVEL9K_SHORTEN_DELIMITER="..."
+POWERLEVEL9K_MULTILINE_FIRST_PROMPT_PREFIX=""
+POWERLEVEL9K_TIME_FORMAT="%D{%H:%M}"
+POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(status os_icon dir vcs) # newline context)
+POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(nodeenv pyenv virtualenv_joined todo ram) #battery ram) #vi_mode)
+POWERLEVEL9K_MULTILINE_LAST_PROMPT_PREFIX="%K{white}%F{black} %n@%m %f%k%F{white}%f "
 
-bindkey -e
+# POWERLEVEL9K_SHORTEN_STRATEGY="truncate_to_unique"
+# POWERLEVEL9K_CONTEXT_DEFAULT_BACKGROUND='teal'
+POWERLEVEL9K_CONTEXT_REMOTE_BACKGROUND='blue'
+POWERLEVEL9K_CONTEXT_ROOT_BACKGROUND='red'
 
-# In vi mode
+ZSH_THEME="powerlevel9k/powerlevel9k"
 
-# bindkey -v
+# Base16 Shell
+BASE16_SHELL="$HOME/.config/base16-shell/"
+[ -n "$PS1" ] && \
+    [ -s "$BASE16_SHELL/profile_helper.sh" ] && \
+        eval "$("$BASE16_SHELL/profile_helper.sh")"
+base16_gruvbox-dark-hard
 
-# bindkey -M vicmd "${terminfo[khome]}" beginning-of-line
-# bindkey -M vicmd "${terminfo[kend]}" end-of-line
+if [[ $(tty | grep tty) ]]; then
+    ZSH_THEME="tjkirch"
+    setfont /usr/lib/kbd/consolefonts/Lat2-Terminus16.psfu.gz
+elif [[ ! $TMUX && $FBTERM ]]; then
+    export TERM="fbterm"
+    # echo -en "\e[3;7;255;255;255}";
+    source ~/gruvbox_256palette.sh
+    exec tmux
+fi
 
-# Better history navigation
-# bindkey -M vicmd "k" up-line-or-beginning-search
-# bindkey -M vicmd "j" down-line-or-beginning-search
-# bindkey "^[OA" up-line-or-beginning-search
-# bindkey "^[OB" down-line-or-beginning-search
+source ~/gruvbox_256palette.sh
 
-# Use hjkl in completion menu.
-# bindkey -M menuselect 'j' vi-down-line-or-history
-# bindkey -M menuselect 'k' vi-up-line-or-history
-# bindkey -M menuselect 'h' vi-backward-char
-# bindkey -M menuselect 'l' vi-forward-char
-
-# Always
-
-# Use home/end normally
-# bindkey "${terminfo[khome]}" beginning-of-line
-# bindkey "${terminfo[kend]}" end-of-line
-
-# Media Keys
-# On ttys and fbterm
-bindkey "^[[29~" brightness-down-key
-bindkey "^[[31~" brightness-up-key
-bindkey "^[[25~" mute-key
-bindkey "^[[26~" lower-volume-key
-bindkey "^[[28~" raise-volume-key
-bindkey "^[[32~" previous-key
-bindkey "^[[33~" play-pause-key
-bindkey "^[[34~" next-key
-
-# On tmux
-bindkey "^[[1;2S" brightness-down-key
-bindkey "^[[15;2~" brightness-up-key
-bindkey "^[[1;2P" mute-key
-bindkey "^[[1;2Q" lower-volume-key
-bindkey "^[[1;2R" raise-volume-key
-bindkey "^[[17;2~" previous-key
-bindkey "^[[18;2~" play-pause-key
-bindkey "^[[19;2~" next-key

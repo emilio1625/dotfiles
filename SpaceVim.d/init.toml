@@ -40,6 +40,10 @@
     on_if = "tabpagenr('$') > 1"
     merged = 0
 
+# [[custom_plugins]]
+    # name = 'ryanoasis/vim-devicons'
+    # merged = 0
+
 [[layers]]
     name = 'VersionControl'
 
@@ -98,5 +102,4 @@
 
 [[layers]]
     name = "cscope"
-
 

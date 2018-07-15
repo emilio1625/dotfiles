@@ -7,34 +7,62 @@
 "=============================================================================
 
 set path+=include
-set spell spelllang=es_mx,en_us 
+set path+=src
+" set spell spelllang=es_mx,en_us
 
 let g:gruvbox_italic=1
 
 " Brightness keys
-noremap <S-F4> :silent !brightness-down-key<enter>
-inoremap <S-F4> <Esc>:silent !brightness-down-key<enter>a
-noremap <S-F5> :silent !brightness-up-key<enter>
-inoremap <S-F5> <Esc>:silent !brightness-up-key<enter>a
+noremap <F16> :silent !brightness-down-key<enter>
+inoremap <F16> <Esc>:silent !brightness-down-key<enter>a
+noremap <F17> :silent !brightness-up-key<enter>
+inoremap <F17> <Esc>:silent !brightness-up-key<enter>a
 
 " Volume keys
-noremap <S-F1> :silent !mute-key<enter>
-inoremap <S-F1> <Esc>:silent !mute-key<enter>a
-noremap <S-F2> :silent !lower-volume-key<enter>
-inoremap <S-F2> <Esc>:silent !lower-volume-key<enter>a
-noremap <S-F3> :silent !raise-volume-key<enter>
-inoremap <S-F3> <Esc>:silent !raise-volume-key<enter>a
+noremap <F13> :silent !mute-key<enter>
+inoremap <F13> <Esc>:silent !mute-key<enter>a
+noremap <F14> :silent !lower-volume-key<enter>
+inoremap <F14> <Esc>:silent !lower-volume-key<enter>a
+noremap <F15> :silent !raise-volume-key<enter>
+inoremap <F15> <Esc>:silent !raise-volume-key<enter>a
 
 " Media keys
-noremap <S-F6> :silent !previous-key<enter>
-inoremap <S-F6> <Esc>:silent !previous-key<enter>a
-noremap <S-F7> :silent !play-pause-key<enter>
-inoremap <S-F7> <Esc>:silent !play-pause-key<enter>a
-noremap <S-F8> :silent !next-key<enter>
-inoremap <S-F8> <Esc>:silent !next-key<enter>a
+noremap <F18> :silent !previous-key<enter>
+inoremap <F18> <Esc>:silent !previous-key<enter>a
+noremap <F19> :silent !play-pause-key<enter>
+inoremap <F19> <Esc>:silent !play-pause-key<enter>a
+noremap <F20> :silent !next-key<enter>
+inoremap <F20> <Esc>:silent !next-key<enter>a
+
+" Screenshots
+noremap  :silent !fb-shot<enter>
+inoremap  <Esc>:silent !fb-shot<enter>a
 
 execute 'source' fnamemodify(expand('<sfile>'), ':h').'/config/main.vim'
 
+let g:spacevim_filetype_icons={
+\ 'sass'     : '',
+\ 'yaml'     : '',
+\ 'h'        : '',
+\ 'hpp'      : '',
+\ 'hxx'      : '',
+\ 'bash'     : '',
+\ 'zsh'      : '',
+\ 'ksh'      : '',
+\ 'csh'      : '',
+\ 'awk'      : '',
+\ 'ps1'      : '',
+\ 'sql'      : '',
+\ 'tsx'      : '',
+\ 'jl'       : '',
+\ 'pp'       : '',
+\ 'vue'      : '﵂',
+\}
+
 set showcmd
 set wrap
+
+" function! StartifyEntryFormat()
+  " return 'WebDevIconsGetFileTypeSymbol(absolute_path) ." ". entry_path'
+" endfunction
 

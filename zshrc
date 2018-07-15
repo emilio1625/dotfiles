@@ -67,8 +67,6 @@ plugins=(
     zsh-completions
 )
 
-ZSH_AUTOSUGGEST_USE_ASYNC=1
-
 if [ $(tty) != "/dev/tty1" ]; then
     source $ZSH/oh-my-zsh.sh
 fi
@@ -127,17 +125,11 @@ compinit
 colors
 zsh-mime-setup
 
-if [[ -n "$DISPLAY" ]]; then
+# Hack for spotify control outside X.org
+fix-spotify
+
+# if not in fbterm nor a TTY
+if [[ ! $FBTERM && ! $(tty | grep tty) ]]; then
     xmodmap ~/.Xmodmap
 fi
 
-# Hack for playerctl outside X.org
-if [[ "$FBTERM" || "$TMUX" || $(tty | grep tty) ]]; then
-    ENVIRON=$(cat /proc/$(pgrep -o -u $USER spotify)/environ | tr \\0 \\n)
-    if [ -n "$ENVIRON" ]; then
-        SPOTIFY_ADDR=$(grep DBUS_SESSION_BUS_ADDRESS <<< $ENVIRON)
-        export $SPOTIFY_ADDR
-    else
-        echo "Unable to set DBUS_SESSION_BUS_ADDRESS."
-    fi
-fi

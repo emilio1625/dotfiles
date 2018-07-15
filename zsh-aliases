@@ -9,7 +9,7 @@ alias '......'='../../../../..'
 
 # No glob >:|
 alias dnf='noglob dnf'
-alias 'sudo dnf'='noglob sudo dnf'
+alias "sudo dnf"="noglob sudo dnf"
 alias locate='noglob locate'
 alias find='noglob find'
 
@@ -17,6 +17,7 @@ alias find='noglob find'
 alias i3config="$EDITOR ~/.config/i3/config"
 alias swayconfig="$EDITOR ~/.config/sway/config"
 alias zshconfig="$EDITOR ~/.zshrc"
+alias zshtheme="$EDITOR ~/.zsh-theme"
 
 # For interactive app that don't like arrow keys
 alias clips='rlwrap clips'

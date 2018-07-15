@@ -133,8 +133,7 @@ function sp-eval {
   | sed 's/^\([^|]*\)\|/\U\1/' \
   | sed -E 's/\|/="/' \
   | sed -E 's/$/"/' \
-  | sed -E 's/^/SPOTIFY_/' \
-  | sed "s/\"/'/g"
+  | sed -E 's/^/SPOTIFY_/'
 }
 
 function sp-art {

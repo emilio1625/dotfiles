@@ -178,29 +178,29 @@ history = mod4+m
 # Context menu.
 context = ctrl+shift+space
 
-[urgency_low]
+# [urgency_low]
 # IMPORTANT: colors have to be defined in quotation marks.
 # Otherwise the "#" and following would be interpreted as a comment.
-frame_color = "#3B7C87"
-foreground = "#3B7C87"
-background = "#191311"
-#background = "#2B313C"
-timeout = 4
-
-[urgency_normal]
-frame_color = "#5B8234"
-foreground = "#5B8234"
-background = "#191311"
-#background = "#2B313C"
-timeout = 6
-
-[urgency_critical]
-frame_color = "#B7472A"
-foreground = "#B7472A"
-background = "#191311"
-#background = "#2B313C"
-timeout = 8
-
+# frame_color = "#3B7C87"
+# foreground = "#3B7C87"
+# background = "#191311"
+# background = "#2B313C"
+# timeout = 4
+#
+# [urgency_normal]
+# frame_color = "#5B8234"
+# foreground = "#5B8234"
+# background = "#191311"
+# background = "#2B313C"
+# timeout = 6
+#
+# [urgency_critical]
+# frame_color = "#B7472A"
+# foreground = "#B7472A"
+# background = "#191311"
+# background = "#2B313C"
+# timeout = 8
+#
 
 # Every section that isn't one of the above is interpreted as a rules to
 # override settings for certain messages.
@@ -254,4 +254,21 @@ timeout = 8
 #    summary = *twitter.com*
 #    urgency = normal
 #
+frame_color = "#d5c4a1"
+separator_color = "#d5c4a1"
+
+[base16_low]
+    msg_urgency = low
+    background = "#3c3836"
+    foreground = "#665c54"
+
+[base16_normal]
+    msg_urgency = normal
+    background = "#504945"
+    foreground = "#d5c4a1"
+
+[base16_critical]
+    msg_urgency = critical
+    background = "#fb4934"
+    foreground = "#ebdbb2"
 # vim: ft=cfg

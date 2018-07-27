@@ -64,3 +64,11 @@ mtp-mount() {
         awk -F= '{if(index($2,"mtp") == 1)system("gio mount "$2)}'
 }
 
+gsearch() {
+    local query=''
+    for word in "$@"; do
+        query+="$word+"
+    done
+    $BROWSER http://google.com/search\?q=$query
+}
+

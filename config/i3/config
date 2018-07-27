@@ -210,7 +210,6 @@ bindsym $mod+mod1+Sys_Req exec --no-startup-id maim -u -i `xdotool getactivewind
 bindsym $mod+F5 exec --no-startup-id toggle_touchpad 
 
 ### Autostart Apps ###
-
 # start ibus
 exec --no-startup-id ibus-daemon -d 
 
@@ -224,8 +223,8 @@ bindsym $mod+c exec clipster -sc
 # Compositor
 exec --no-startup-id compton -b
 
-# Reduce monitor rate and set as primary
-exec --no-startup-id xrandr --output eDP-1 --mode 1366x768 --rate 40.00 --primary
+# Set monitor as primary
+exec --no-startup-id xrandr --output eDP-1 --mode 1366x768 --primary
 
 # Background
 exec --no-startup-id ~/.fehbg #feh --bg-fill ~/.config/i3/bg.png
@@ -236,14 +235,11 @@ exec_always --no-startup-id killall dunst
 # GNOME settings
 exec --no-startup-id /usr/libexec/gsd-xsettings
 
-# GNOME power managment
-exec_always --no-startup-id gnome-power-manager
-
 # Lxpolkit
 exec --no-startup-id /usr/bin/lxpolkit
 
 # Spotify
-exec spotify
+exec --no-startup-id spotify
 
 ### Windows in a specific workspace ###
 
@@ -271,4 +267,6 @@ for_window [class="Spotify"] move to workspace $ws9
 # Others
 
 
+# Xmodmap
+exec --no-startup-id bash -c "sleep 15; xmodmap ~/.Xmodmap"
 

@@ -128,6 +128,10 @@ zsh-mime-setup
 # Hack for spotify control outside X.org
 fix-spotify
 
+if [[ "$FBTERM" ]]; then
+    export BROWSER=elinks
+fi
+
 # if not in fbterm nor a TTY
 if [[ ! $FBTERM && ! $(tty | grep tty) ]]; then
     xmodmap ~/.Xmodmap

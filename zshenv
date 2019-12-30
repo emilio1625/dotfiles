@@ -1,3 +1,0 @@
-# Functions
-source ~/.zsh-functions
-

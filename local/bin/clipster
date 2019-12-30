@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 
 """Clipster - Clipboard manager."""
 
@@ -25,13 +25,13 @@ try:
     from gi.repository import Wnck
 except (ImportError, ValueError):
     Wnck = None
-try:
+
+if sys.version_info.major == 3:
     # py 3.x
-    import configparser
-except ImportError:
+    from configparser import ConfigParser as SafeConfigParser
+else:
     # py 2.x
-    import ConfigParser as configparser
-    # Use this as a handy place to make some other compatibility hacks
+    from ConfigParser import SafeConfigParser  # pylint:disable=import-error
     # In python 2, ENOENT is sometimes IOError and sometimes OSError. Catch
     # both by catching their immediate superclass exception EnvironmentError.
     FileNotFoundError = EnvironmentError  # pylint: disable=redefined-builtin
@@ -178,7 +178,10 @@ class Client(object):
         if data:
             # data is a list of 1 or more parts of a json string.
             # Reassemble this, then join with delimiter
-            return self.args.delim.join(json.loads(''.join(data)))
+            json_data = json.loads(''.join(data))
+            if self.args.position is not None:
+                json_data = json_data[self.args.position]
+            return self.args.delim.join(json_data)
 
 
 class Daemon(object):
@@ -469,7 +472,7 @@ class Daemon(object):
         # in whitelist and not found in blacklist
         if self.whitelist_classes or self.blacklist_classes:
             wm_class = get_wm_class_from_active_window().lower()
-            if (self.whitelist_classes and wm_class not in self.whitelist_classes) or \
+            if (wm_class and self.whitelist_classes and wm_class not in self.whitelist_classes) or \
                (self.blacklist_classes and wm_class in self.blacklist_classes):
                 logging.debug("Ignoring active window.")
                 return True
@@ -479,16 +482,10 @@ class Daemon(object):
         # Some apps update primary during mouse drag (chrome)
         # Block at start to prevent repeated triggering
         board.handler_block(event_id)
-        # FIXME: this devs hack is a bit verbose. Look instead at
-        # gdk_seat_get_pointer -> gdk_device_get_state
-        # once GdkSeat is in stable
-        for dev in self.window.get_display().get_device_manager().list_devices(Gdk.DeviceType.MASTER):
-            if dev.get_source() == Gdk.InputSource.MOUSE:
-                while Gdk.ModifierType.BUTTON1_MASK & self.window.get_root_window().get_device_position(dev)[3]:
-                    # Do nothing while mouse button is held down (selection drag)
-                    pass
-            break
-
+        display = self.window.get_display()
+        while Gdk.ModifierType.BUTTON1_MASK & display.get_pointer().mask:
+            # Do nothing while mouse button is held down (selection drag)
+            pass
         # Try to get text from clipboard
         text = board.wait_for_text()
         if text:
@@ -730,9 +727,12 @@ def get_wm_class_from_active_window():
     screen = Wnck.Screen.get_default()
     screen.force_update()
     active_window = screen.get_active_window()
-    wm_class = active_window.get_class_group_name()
-    logging.debug("Active window class is %s", wm_class)
-    return wm_class
+    if active_window:
+        wm_class = active_window.get_class_group_name()
+        logging.debug("Active window class is %s", wm_class)
+        return wm_class
+    else:
+        return ""
 
 
 def get_list_from_option_string(string):
@@ -773,7 +773,8 @@ def parse_args():
                            help="Delete from clipboard. Deletes matching text, or if no argument given, deletes last item.")
     actiongrp.add_argument('--erase-entire-board', action="store_true",
                            help="Delete all items from the clipboard.")
-
+    parser.add_argument('-N', '--position', action="store", type=int,
+                        help="Return an entry from a specific indexed position. Defaults to -1 (last entry).")
     parser.add_argument('-n', '--number', action="store", type=int, default=1,
                         help="Number of lines to output: defaults to 1 (See -o). 0 returns entire history.")
 
@@ -794,7 +795,7 @@ def parse_config(args, data_dir, conf_dir):
     """Configuration derived from defaults & file."""
 
     # Set some config defaults
-    config_defaults = {"data_dir": data_dir,  # clipster 'root' dir (see history/socket/pid file config)
+    config_defaults = {"data_dir": data_dir,  # clipster 'root' dir (see history/socket config)
                        "conf_dir": conf_dir,  # clipster config dir (see pattern/ignore_pattern file config). Can be overridden using -f cmd-line arg.
                        "default_selection": "PRIMARY",  # PRIMARY or CLIPBOARD
                        "active_selections": "PRIMARY,CLIPBOARD",  # Comma-separated list of selections to monitor/save
@@ -804,7 +805,7 @@ def parse_config(args, data_dir, conf_dir):
                        "history_update_interval": "60",  # Flush history to disk every N seconds, if changed (0 disables timeout)
                        "write_on_change": "no",  # Always write history file immediately (overrides history_update_interval)
                        "socket_file": "%(data_dir)s/clipster_sock",
-                       "pid_file": "%(data_dir)s/clipster.pid",
+                       "pid_file": "/run/user/{}/clipster.pid".format(os.getuid()),
                        "max_input": "50000",  # max length of selection input
                        "row_height": "3",  # num rows to show in widget
                        "duplicates": "no",  # allow duplicates, or instead move the original entry to top
@@ -819,7 +820,7 @@ def parse_config(args, data_dir, conf_dir):
                        "blacklist_classes": "",  # Comma-separated list of WM_CLASS to identify apps from which to ignore owner-change events
                        "whitelist_classes": ""}  # Comma-separated list of WM_CLASS to identify apps from which to not ignore owner-change events
 
-    config = configparser.SafeConfigParser(config_defaults)
+    config = SafeConfigParser(config_defaults)
     config.add_section('clipster')
 
     # Try to read config file (either passed in, or default value)
@@ -864,6 +865,10 @@ def main():
     # parse command-line arguments
     args = parse_args()
 
+    # Ensure that number is 0 if position is used to get all history
+    if args.position is not None:
+        args.number = 0
+
     # Enable logging
     logging.basicConfig(format='%(levelname)s:%(message)s',
                         level=getattr(logging, args.log_level.upper()))
@@ -901,6 +906,7 @@ def safe_decode(data):
     except (UnicodeDecodeError, UnicodeEncodeError, AttributeError):
         pass
     return data
+
 
 if __name__ == "__main__":
     try:

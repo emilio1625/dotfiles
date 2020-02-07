@@ -1,0 +1,3 @@
+#!/bin/sh
+
+exec chpst -u "emilio1625:$(id -Gn emilio1625 | tr ' ' ':')" runsvdir /home/emilio1625/.local/var/service

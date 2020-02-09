@@ -24,10 +24,8 @@ order += "tztime local"
 
 volume master {
         format = "墳 %volume"
-        format_muted = "婢 (%volume)"
+        format_muted = "婢 %volume"
         device = "default"
-#        mixer = "Master"
-#        mixer_idx = 0
 }
 
 wireless _first_ {

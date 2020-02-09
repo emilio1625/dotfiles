@@ -21,7 +21,7 @@ if [[ -z "$DISPLAY" ]] && [[ $(tty) == "/dev/tty1" ]]; then
     # Nextcloud
     $(sleep 30 && mount ~/Nextcloud/Keepass &>/dev/null) &
     disown %1
-    exec startx 1>| ~/.start-out.log 2>| ~/.start-err.log
+    exec dbus-launch --sh-syntax sway 1>| ~/.start-out.log 2>| ~/.start-err.log
 fi
 
 type -P pandoc &>/dev/null && eval "$(pandoc --bash-completion)"

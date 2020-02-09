@@ -1,0 +1,8 @@
+# Nextcloud mountpoints
+https://rompope.fi-b.unam.mx/remote.php/webdav/AV	 /home/emilio1625/Nextcloud/AV        davfs nofail,rw,user,uid=emilio1625,noauto 0 0
+https://rompope.fi-b.unam.mx/remote.php/webdav/Documents /home/emilio1625/Nextcloud/Documents davfs nofail,rw,user,uid=emilio1625,noauto 0 0
+https://rompope.fi-b.unam.mx/remote.php/webdav/Facultad	 /home/emilio1625/Nextcloud/Facultad  davfs nofail,rw,user,uid=emilio1625,noauto 0 0
+https://rompope.fi-b.unam.mx/remote.php/webdav/LIDSOL    /home/emilio1625/Nextcloud/LIDSOL    davfs nofail,rw,user,uid=emilio1625,noauto 0 0
+https://rompope.fi-b.unam.mx/remote.php/webdav/Keepass   /home/emilio1625/Nextcloud/Keepass   davfs nofail,rw,user,uid=emilio1625,noauto 0 0
+https://rompope.fi-b.unam.mx/remote.php/webdav/k_lidsol  /home/emilio1625/Nextcloud/k_lidsol  davfs nofail,rw,user,uid=emilio1625,noauto 0 0
+

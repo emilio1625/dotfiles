@@ -33,6 +33,8 @@ output * bg ~/.config/i3/bg.png fill
 #   output HDMI-A-1 resolution 1920x1080 position 1920,0
 #
 # You can get the names of your outputs by running: swaymsg -t get_outputs
+output eDP-1 resolution 1366x768 position 0,0
+output VGA-1 resolution 1280x1024 position 1366,0
 
 ### Idle configuration
 #
@@ -70,6 +72,7 @@ exec swayidle -w \
 # Read `man 5 sway-input` for more information about this section.
 
 input type:touchpad {
+    tap enabled
     dwt enabled
 }
 
@@ -294,6 +297,22 @@ focus_follows_mouse no
 #
 # Startup
 #
-exec firefox-wayland
+exec firefox
+
+#
+# Workspaces
+#
+
+# IDEs
+assign [class="Code"] → $ws2
+assign [class="jetbrains"] → $ws2
+assign [class="Atom"]→ $ws2
+assign [class="Gedit"] → $ws2
+
+# Firefox only
+assign [instance="Navigator"] → $ws3
+
+# Spotify only
+for_window [class="Spotify"] move to workspace $ws9
 
 include /etc/sway/config.d/*
